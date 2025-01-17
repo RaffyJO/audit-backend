@@ -17,11 +17,23 @@ const register = async (email, password, name) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        return await insertUser({
+        const newUser = await insertUser({
             email: email,
             password: hashedPassword,
             name: name,
         });
+
+        const payload = {
+            id: newUser.id,
+            email: newUser.email,
+            name: newUser.name,
+        }
+        const secretKey = process.env.JWT_SECRET;
+        const expiresIn = 60 * 60 * 1;
+
+        const accessToken = jwt.sign({data: payload}, secretKey, {expiresIn: expiresIn})
+
+        return accessToken;
     } catch (error) {
         throw error;
     }

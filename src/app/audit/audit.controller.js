@@ -5,6 +5,7 @@ const validateAudit = require("../../web/request/audit.validator");
 
 const { 
     getAudits,
+    getAllAudits,
     createAudit,
     updateAudit
 } = require("./audit.service");
@@ -15,6 +16,16 @@ router.get("/", async (req, res) => {
     try {
         const userId = req.userData.data.id;
         const audits = await getAudits(userId);
+        res.status(200).send(createResponse("Get audits success", audits));
+    } catch (error) {
+        res.status(500).send(createResponse("Failed to get audits", error.message));
+    }
+});
+
+router.get("/all", async (req, res) => {
+    try {
+        const limit = parseInt(req.query.limit) || null;
+        const audits = await getAllAudits(limit);
         res.status(200).send(createResponse("Get audits success", audits));
     } catch (error) {
         res.status(500).send(createResponse("Failed to get audits", error.message));

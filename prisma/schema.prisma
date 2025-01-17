@@ -14,33 +14,35 @@ datasource db {
 }
 
 model User {
-  id     Int      @id @default(autoincrement())
-  email  String   @unique @db.VarChar(255)
-  password  String   @db.VarChar(255)
-  name   String   @db.VarChar(255)
-  created_at  DateTime   @default(now())  
-  updated_at  DateTime   @updatedAt
-  audits Audit[] 
+  id          Int       @id @default(autoincrement())
+  email       String    @unique @db.VarChar(255)
+  password    String    @db.VarChar(255)
+  name        String    @db.VarChar(255)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  audits      Audit[]
 
   @@map("users")
 }
 
 enum AuditArea {
-  TOKO
-  PASAR
+  KEUANGAN
+  SDM
+  OPERASIONAL
+  K3
 }
 
 model Audit {
-  id         Int        @id @default(autoincrement())
-  title      String     @db.VarChar(255)
-  area       AuditArea  
-  start_date  DateTime   
+  id          Int        @id @default(autoincrement())
+  title       String     @db.VarChar(255)
+  area        AuditArea
+  start_date  DateTime
   close_date  DateTime
-  user_id     Int        
-  created_at  DateTime   @default(now())  
-  updated_at  DateTime   @updatedAt      
+  user_id     Int
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
 
-  user       User       @relation(fields: [user_id], references: [id])
+  user        User       @relation(fields: [user_id], references: [id])
 
   @@map("audits")
 }

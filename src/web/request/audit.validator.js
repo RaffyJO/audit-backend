@@ -9,7 +9,7 @@ const validateAudit = [
     check("area")
         .notEmpty()
         .withMessage("Area is required")
-        .isIn(["TOKO", "PASAR"])
+        .isIn(["KEUANGAN", "SDM", "OPERASIONAL", "K3"])
         .withMessage("Area must be either 'toko' or 'pasar'"),
     check("start_date")
         .notEmpty()

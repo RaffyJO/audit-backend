@@ -24,6 +24,36 @@ const getAuditsByUser = async (id) => {
     }
 };
 
+const getAuditAllUser = async (limit = null) => {
+    try {
+        const options = {
+            select: {
+                id: true,
+                title: true,
+                area: true,
+                start_date: true,
+                close_date: true,
+                user: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+            orderBy: {
+                created_at: 'desc',
+            },
+        };
+
+        if (limit !== null) {
+            options.take = limit;
+        }
+
+        return await prisma.audit.findMany(options);
+    } catch (error) {
+        throw error;
+    }
+};
+
 const insertAudit = async (userId ,audit) => {
     try {
         return await prisma.audit.create({
@@ -33,6 +63,13 @@ const insertAudit = async (userId ,audit) => {
                 start_date: audit.start_date,
                 close_date: audit.close_date,
                 user_id: userId,
+            },
+            select: {
+                id: true,
+                title: true,
+                area: true,
+                start_date: true,
+                close_date: true,
             },
         });
     } catch (error) {
@@ -60,6 +97,13 @@ const updateAuditById = async (id, audit) => {
                 start_date: audit.start_date,
                 close_date: audit.close_date,
             },
+            select: {
+                id: true,
+                title: true,
+                area: true,
+                start_date: true,
+                close_date: true,
+            },
         });
 
         return auditData;
@@ -70,6 +114,7 @@ const updateAuditById = async (id, audit) => {
 
 module.exports = { 
     getAuditsByUser,
+    getAuditAllUser,
     insertAudit,
     findAuditById,
     updateAuditById

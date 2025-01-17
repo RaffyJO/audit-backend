@@ -2,6 +2,7 @@ const moment = require("moment");
 
 const { 
     getAuditsByUser,
+    getAuditAllUser,
     insertAudit,
     findAuditById,
     updateAuditById
@@ -10,6 +11,23 @@ const {
 const getAudits = async (id) => {
     try {
         const audits = await getAuditsByUser(id);
+
+        return audits.map((audit) => ({
+            id: audit.id,
+            auditor: audit.user.name,
+            title: audit.title,
+            area: audit.area,
+            start_date: moment(audit.start_date).format("MM-DD-YYYY HH:mm:ss"),
+            close_date: moment(audit.close_date).format("MM-DD-YYYY HH:mm:ss"),
+        }));
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getAllAudits = async (limit = null) => {
+    try {
+        const audits = await getAuditAllUser(limit);
 
         return audits.map((audit) => ({
             id: audit.id,
@@ -51,6 +69,7 @@ const updateAudit = async (id, userId, audit) => {
 
 module.exports = { 
     getAudits,
+    getAllAudits,
     createAudit,
     updateAudit
 };

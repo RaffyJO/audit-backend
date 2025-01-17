@@ -22,9 +22,7 @@ router.post("/register", validateRegister, async (req, res) => {
 
         const result = await register(email, password, name);
         res.status(201).send(createResponse("Register success", {
-            id: result.id,
-            name: result.name,
-            email: result.email,
+            access_token: result
         }));
     } catch (error) {
         res.status(500).send(createResponse("Failed to register", error.message));
